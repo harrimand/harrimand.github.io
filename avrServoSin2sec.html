@@ -181,7 +181,7 @@ div#notebook {
 
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="prompt input_prompt">In&nbsp;[1]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class="highlight"><pre><span class="c1"># Interactive Python Notebook</span>
@@ -295,14 +295,14 @@ div#notebook {
 <span class="se">\n\t</span><span class="s2">ser </span><span class="se">\t</span><span class="s2">TempH</span><span class="se">\</span>
 <span class="se">\n\t</span><span class="s2">add </span><span class="se">\t</span><span class="s2">pwL, TempL</span><span class="se">\</span>
 <span class="se">\n\t</span><span class="s2">adc </span><span class="se">\t</span><span class="s2">pwH, TempH</span><span class="se">\</span>
-<span class="se">\n\t</span><span class="s2">ldi </span><span class="se">\t</span><span class="s2">TempH, high(&quot;</span> <span class="o">+</span> <span class="n">TendLable</span> <span class="o">+</span> <span class="s2">&quot;)</span><span class="se">\</span>
-<span class="se">\n\t</span><span class="s2">ldi </span><span class="se">\t</span><span class="s2">TempL, low(&quot;</span> <span class="o">+</span> <span class="n">TendLable</span> <span class="o">+</span> <span class="s2">&quot;)</span><span class="se">\</span>
+<span class="se">\n\t</span><span class="s2">ldi </span><span class="se">\t</span><span class="s2">TempH, high(&quot;</span> <span class="o">+</span> <span class="n">TendLable</span> <span class="o">+</span> <span class="s2">&quot; &lt;&lt; 1)</span><span class="se">\</span>
+<span class="se">\n\t</span><span class="s2">ldi </span><span class="se">\t</span><span class="s2">TempL, low(&quot;</span> <span class="o">+</span> <span class="n">TendLable</span> <span class="o">+</span> <span class="s2">&quot; &lt;&lt; 1)</span><span class="se">\</span>
 <span class="se">\n\t</span><span class="s2">cp  </span><span class="se">\t</span><span class="s2">ZL, TempL</span><span class="se">\</span>
 <span class="se">\n\t</span><span class="s2">cpc </span><span class="se">\t</span><span class="s2">ZH, TempH</span><span class="se">\</span>
-<span class="se">\n\t</span><span class="s2">brne</span><span class="se">\t</span><span class="s2">not&quot;</span> <span class="o">+</span> <span class="s2">&quot;TABLEend&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">travTime</span><span class="p">))</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\</span>
+<span class="se">\n\t</span><span class="s2">brne</span><span class="se">\t</span><span class="s2">not&quot;</span> <span class="o">+</span> <span class="s2">&quot;TABLEend&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">travTime</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="s1">&#39;_&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\</span>
 <span class="se">\n\t</span><span class="s2">ldi </span><span class="se">\t</span><span class="s2">ZH, high(&quot;</span> <span class="o">+</span> <span class="n">TaddLable</span> <span class="o">+</span> <span class="s2">&quot; &lt;&lt; 1)</span><span class="se">\</span>
 <span class="se">\n\t</span><span class="s2">ldi </span><span class="se">\t</span><span class="s2">ZL, low(&quot;</span> <span class="o">+</span> <span class="n">TaddLable</span> <span class="o">+</span> <span class="s2">&quot; &lt;&lt; 1)</span><span class="se">\</span>
-<span class="se">\n</span><span class="s2">notTableEnd:</span><span class="se">\</span>
+<span class="se">\n</span><span class="s2">notTableEnd&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">travTime</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">,</span><span class="s1">&#39;_&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;:</span><span class="se">\</span>
 <span class="se">\n\t</span><span class="s2">ret</span><span class="se">\</span>
 <span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
@@ -751,14 +751,14 @@ readNextStep:
 	ser 	TempH
 	add 	pwL, TempL
 	adc 	pwH, TempH
-	ldi 	TempH, high(TABLEend2_0)
-	ldi 	TempL, low(TABLEend2_0)
+	ldi 	TempH, high(TABLEend2_0 &lt;&lt; 1)
+	ldi 	TempL, low(TABLEend2_0 &lt;&lt; 1)
 	cp  	ZL, TempL
 	cpc 	ZH, TempH
-	brne	notTABLEend2
+	brne	notTABLEend2_0
 	ldi 	ZH, high(TABLEaddr2_0 &lt;&lt; 1)
 	ldi 	ZL, low(TABLEaddr2_0 &lt;&lt; 1)
-notTableEnd:
+notTableEnd2_0:
 	ret
 
 </pre>
@@ -777,19 +777,6 @@ notTableEnd:
 <p><b>Additional Documents with different travel times:</b><br><br> <a href="avrServoSin1sec.html">1 Second Period</a><br><br> <a href="avrServoSin1_5sec.html">1.5 Second Period</a><br><br> <a href="avrServoSin3sec.html">3 Second Period</a><br><br> <a href="avrServoSin4sec.html">4 Second Period</a></p>
 </div>
 </div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class="highlight"><pre> 
-</pre></div>
-
-</div>
-</div>
-</div>
-
 </div>
     </div>
   </div>
