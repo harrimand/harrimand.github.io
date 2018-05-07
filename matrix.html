@@ -181,14 +181,15 @@ div#notebook {
 
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[19]:</div>
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class="highlight"><pre><span class="k">class</span> <span class="nc">Mat</span><span class="p">:</span>
+<div class="highlight"><pre><span class="c1"># Matrix row operations calculator by Darrell Harriman  harrimand@gmail.com </span>
+<span class="k">class</span> <span class="nc">Mat</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Perform matrix row operations on an n x n list &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mtrx</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create object from n x n list</span>
-<span class="sd">        </span>
+
 <span class="sd">        Args:</span>
 <span class="sd">            mtrx (2D list of [int|float]): n x n list of integers or floats</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -196,13 +197,18 @@ div#notebook {
         <span class="bp">self</span><span class="o">.</span><span class="n">prec</span> <span class="o">=</span> <span class="mi">3</span>
 
     <span class="k">def</span> <span class="nf">showT</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Display labeled rows of matrix without formatting to set precision</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            none</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">):</span>
             <span class="k">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">Row &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;: &quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
         <span class="k">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">R</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">r</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get row from 2D List</span>
-<span class="sd">        </span>
+<span class="sd"> </span>
 <span class="sd">        Args:</span>
 <span class="sd">            r (int): Row number 1 .. len(list)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -210,7 +216,11 @@ div#notebook {
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">[</span><span class="n">r</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
    
     <span class="k">def</span> <span class="nf">augmentI</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Augment Matrix with len(list) by len(list) Identity Matrix&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Augment Matrix with len(list) by len(list) Identity Matrix</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            none</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">L</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">)</span>
         <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Augmenting Matrix with &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">L</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; x &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">L</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; Identity Matrix&quot;</span><span class="p">)</span>
         <span class="n">N</span> <span class="o">=</span> <span class="p">[]</span>
@@ -271,6 +281,12 @@ div#notebook {
         <span class="k">else</span><span class="p">:</span> <span class="k">pass</span>
 
     <span class="k">def</span> <span class="nf">mulRow</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rx</span><span class="p">,</span> <span class="n">con</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Multiply row by a constant</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            rx(int): row to be updated with product of itself and a constant</span>
+<span class="sd">            con([int|float]):  integer or float multiplicand for rx</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Multiplying Row &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">rx</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; by &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">con</span><span class="p">))</span>
         <span class="n">N</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">):</span>
@@ -281,6 +297,12 @@ div#notebook {
         <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">divRow</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rx</span><span class="p">,</span> <span class="n">con</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Divide row by a constant</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            rx(int): row to be updated with quotient of itself and a constant</span>
+<span class="sd">            con([int|float]):  integer or float divisor for rx</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Dividing Row &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">rx</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; by &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">con</span><span class="p">))</span>
         <span class="n">N</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">):</span>
@@ -291,6 +313,12 @@ div#notebook {
         <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">swapRows</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rX</span><span class="p">,</span> <span class="n">rY</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Exchange row rX with row rY</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            rx(int): row to be swapped with row rY</span>
+<span class="sd">            rY(int): row to be swapped with row rX</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Swapping Row &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">rX</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; with Row &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">rY</span><span class="p">))</span>
         <span class="n">N</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">):</span>
@@ -303,15 +331,31 @@ div#notebook {
         <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
         
     <span class="k">def</span> <span class="nf">subMatrixRight</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Replace Matrix with right half of matrix</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            none</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">N</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">:</span>
             <span class="n">N</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">m</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">m</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">):]])</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">setPrecision</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">P</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set displayed precision of elements in m matrix.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            P([int]) Number of digits following decimal point.</span>
+<span class="sd">                If left blank, sets precision to 3 digits  </span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">prec</span> <span class="o">=</span> <span class="n">P</span>        
     
     <span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Print Matrix (values formated with set precision)</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            none</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">formatStr</span> <span class="o">=</span> <span class="s1">&#39;{:&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;.&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">prec</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;f}&#39;</span>
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="p">):</span>
             <span class="k">print</span><span class="p">(</span><span class="s2">&quot;|&quot;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
@@ -329,7 +373,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[20]:</div>
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class="highlight"><pre><span class="c1"># Demonstrate inverting a 3x3 Matrix</span>
@@ -459,7 +503,7 @@ Getting Inverted Matrix
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[21]:</div>
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class="highlight"><pre><span class="c1">#Random use of class methods</span>
@@ -566,7 +610,7 @@ Row 1:  [0.2, 0.2, 0.0]
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[22]:</div>
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class="highlight"><pre><span class="c1"># Demonstrate inverting a 4x4 matrix</span>
@@ -619,9 +663,13 @@ Row 1:  [0.2, 0.2, 0.0]
 
 <span class="k">print</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="o">*</span><span class="mi">60</span><span class="p">)</span>
 
-<span class="k">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">Mat3</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;Row Count: &quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">Mat3</span><span class="p">))</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Creating zeros List to match size of Mat3&quot;</span><span class="p">)</span>
 <span class="n">Mat4</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">0</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">Mat3</span><span class="p">))]</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">Mat3</span><span class="p">))]</span>
 <span class="k">print</span><span class="p">(</span><span class="n">Mat4</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Setting Row index 0, Column index 1 to 8&quot;</span><span class="p">)</span>
 <span class="n">Mat4</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">8</span>
 <span class="k">print</span><span class="p">(</span><span class="n">Mat4</span><span class="p">)</span>
 </pre></div>
@@ -709,8 +757,12 @@ Get Inverted Matrix
 
 
 ------------------------------------------------------------
-4
+Row Count:  4
+
+Creating zeros List to match size of Mat3
 [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]
+
+Setting Row index 0, Column index 1 to 8
 [[0, 8, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]
 
 </pre>
@@ -723,7 +775,7 @@ Get Inverted Matrix
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class="highlight"><pre> 
