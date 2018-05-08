@@ -1,4 +1,5 @@
 # Matrix row operations calculator by Darrell Harriman  harrimand@gmail.com 
+
 class Mat:
     """Perform matrix row operations on an n x n list """
     def __init__(self, mtrx):
@@ -9,8 +10,9 @@ class Mat:
         """
         self.update(mtrx)
         self.prec = 3
+        self.autoShow = True
 
-    def showT(self):
+    def showRows(self):
         """Display labeled rows of matrix without formatting to set precision
 
         Args:
@@ -19,6 +21,15 @@ class Mat:
         for i, m in enumerate(self.M):
             print("\tRow " + str(i+1) + ": ", self.M[i])
         print("\n")
+        
+    def setAutoShow(self, ashow=True):
+        """Automatically display matrix after row operations
+        
+        Args:
+            ashow(boolean): if True, display matrix after row operations        
+        """
+        print("Setting autoShow to ", self.autoShow)
+        self.autoShow = ashow
 
     def R(self, r):
         """Get row from 2D List
@@ -43,6 +54,7 @@ class Mat:
                 m[j] = n * 1.0
             N.extend([m + [0.0 if not(i == ind) else 1.0 for ind in range(L)]])
         self.update(N)
+        if self.autoShow: self.show()
 
     def update(self, mtrx):
         """Update object with calculated mtrx
@@ -71,8 +83,10 @@ class Mat:
                 else:
                     N.extend([m])
             self.update(N)
+            if self.autoShow: self.show()
         else: pass
 
+        
     def subRows(self, rx, tx, con=1):
         """Subtract row or a multiple of a row from another row
         
@@ -92,6 +106,7 @@ class Mat:
                 else:
                     N.extend([m])
             self.update(N)
+            if self.autoShow: self.show()
         else: pass
 
     def mulRow(self, rx, con=1):
@@ -109,6 +124,7 @@ class Mat:
             else:
                 N.extend([m])
         self.update(N)
+        if self.autoShow: self.show()
 
     def divRow(self, rx, con=1):
         """Divide row by a constant
@@ -125,6 +141,7 @@ class Mat:
             else:
                 N.extend([m])
         self.update(N)
+        if self.autoShow: self.show()
 
     def swapRows(self, rX, rY):
         """Exchange row rX with row rY
@@ -143,6 +160,7 @@ class Mat:
             else:
                 N.extend([m])
         self.update(N)
+        if self.autoShow: self.show()
         
     def subMatrixRight(self):
         """Replace Matrix with right half of matrix
@@ -154,6 +172,7 @@ class Mat:
         for m in self.M:
             N.extend([m[int(len(m)/2):]])
         self.update(N)
+        if self.autoShow: self.show()
 
     def setPrecision(self, P=3):
         """Set displayed precision of elements in m matrix.
@@ -162,8 +181,10 @@ class Mat:
             P([int]) Number of digits following decimal point.
                 If left blank, sets precision to 3 digits  
         """
+        print("Setting display precision to ", str(P))
         self.prec = P        
-    
+        if self.autoShow: self.show()
+        
     def show(self):
         """Print Matrix (values formated with set precision)
 
@@ -179,4 +200,27 @@ class Mat:
             print("  |")
         print("\n")
 
+    def get(self):
+        """Returns 2D list populated with matrix values
+
+        Args:
+            none        
+        """
+        return self.M
+
+    def help(self):
+        print("\n\
+        R(r) Get row from 2D List\n\
+        augmentI() Augment with len(list) by len(list) Identity Matrix\n\
+        swapRows(rX, rY) Exchange row rX with row rY\n\
+        addRows(rx, tx, [con=1]) Add (row tx * con) to row rx\n\
+        subRows(rx, tx, [con=1]) Subtract (row tx * con) from row rx\n\
+        mulRow(rx, [con=1]) Multiply row rx by a constant\n\
+        divRow(rx, [con=1]) Divide row rx by a constant\n\
+        show() Print Matrix (values formated with set precision)\n\
+        showRows() Display labeled rows of matrix without formatting\n\
+        setAutoShow([True|False]) Automatic display after row operations\n\
+        setPrecision([P=3]) Set displayed precision of elements in matrix.\n\
+        subMatrixRight() Replace Matrix with right half of matrix\n\
+        get() Returns 2d list populated with matrix values")
 

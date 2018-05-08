@@ -181,20 +181,20 @@ div#notebook {
 
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[1]:</div>
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class="highlight"><pre><span class="kn">from</span> <span class="nn">matrix</span> <span class="kn">import</span> <span class="n">Mat</span>
 
 <span class="n">M1</span> <span class="o">=</span> <span class="n">Mat</span><span class="p">([[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">],</span> <span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">1</span><span class="p">]])</span>
 <span class="n">M1</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="n">M1</span><span class="o">.</span><span class="n">setAutoShow</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
 
 <span class="n">M1</span><span class="o">.</span><span class="n">setPrecision</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">M1</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 
-<span class="n">M1</span><span class="o">.</span><span class="n">showT</span><span class="p">()</span>
+<span class="n">M1</span><span class="o">.</span><span class="n">showRows</span><span class="p">()</span>
 
-<span class="n">help</span><span class="p">(</span><span class="n">Mat</span><span class="p">)</span>
+<span class="n">M1</span><span class="o">.</span><span class="n">help</span><span class="p">()</span>
 </pre></div>
 
 </div>
@@ -213,6 +213,8 @@ div#notebook {
 |   8.000   9.000   1.000  |
 
 
+Setting autoShow to  True
+Setting display precision to  1
 |     2.0     3.0     4.0  |
 |     5.0     6.0     7.0  |
 |     8.0     9.0     1.0  |
@@ -223,110 +225,20 @@ div#notebook {
 	Row 3:  [8, 9, 1]
 
 
-Help on class Mat in module matrix:
 
-class Mat(builtins.object)
- |  Perform matrix row operations on an n x n list
- |  
- |  Methods defined here:
- |  
- |  R(self, r)
- |      Get row from 2D List
- |      
- |      Args:
- |          r (int): Row number 1 .. len(list)
- |  
- |  __init__(self, mtrx)
- |      Create object from n x n list
- |      
- |      Args:
- |          mtrx (2D list of [int|float]): n x n list of integers or floats
- |  
- |  addRows(self, rx, tx, con=1)
- |      Add row or a multiple of a row to another row
- |      
- |      Args:
- |          rx(int): row to be updated with sum of row plus multiple
- |              of another row.
- |          tx(int): row to be multiplied by a constant and added to row(rx)
- |          con([int|float]):  integer or float multiplicand for tx
- |  
- |  augmentI(self)
- |      Augment Matrix with len(list) by len(list) Identity Matrix
- |      
- |      Args:
- |          none
- |  
- |  divRow(self, rx, con=1)
- |      Divide row by a constant
- |      
- |      Args:
- |          rx(int): row to be updated with quotient of itself and a constant
- |          con([int|float]):  integer or float divisor for rx
- |  
- |  mulRow(self, rx, con=1)
- |      Multiply row by a constant
- |      
- |      Args:
- |          rx(int): row to be updated with product of itself and a constant
- |          con([int|float]):  integer or float multiplicand for rx
- |  
- |  setPrecision(self, P=3)
- |      Set displayed precision of elements in m matrix.
- |      
- |      Args:
- |          P([int]) Number of digits following decimal point.
- |              If left blank, sets precision to 3 digits
- |  
- |  show(self)
- |      Print Matrix (values formated with set precision)
- |      
- |      Args:
- |          none
- |  
- |  showT(self)
- |      Display labeled rows of matrix without formatting to set precision
- |      
- |      Args:
- |          none
- |  
- |  subMatrixRight(self)
- |      Replace Matrix with right half of matrix
- |      
- |      Args:
- |          none
- |  
- |  subRows(self, rx, tx, con=1)
- |      Subtract row or a multiple of a row from another row
- |      
- |      Args:
- |          rx(int): row to be updated with row minus a multiple
- |              of another row.
- |          tx(int): row to be multiplied by a constant and subtracted from row(rx)
- |          con([int|float]):  integer or float multiplicand for tx
- |  
- |  swapRows(self, rX, rY)
- |      Exchange row rX with row rY
- |      
- |      Args:
- |          rx(int): row to be swapped with row rY
- |          rY(int): row to be swapped with row rX
- |  
- |  update(self, mtrx)
- |      Update object with calculated mtrx
- |      
- |      Args:
- |          mtrx (2D list of [int|float]): n x n list of integers or floats
- |  
- |  ----------------------------------------------------------------------
- |  Data descriptors defined here:
- |  
- |  __dict__
- |      dictionary for instance variables (if defined)
- |  
- |  __weakref__
- |      list of weak references to the object (if defined)
-
+        R(r) Get row from 2D List
+        augmentI() Augment with len(list) by len(list) Identity Matrix
+        swapRows(rX, rY) Exchange row rX with row rY
+        addRows(rx, tx, [con=1]) Add (row tx * con) to row rx
+        subRows(rx, tx, [con=1]) Subtract (row tx * con) from row rx
+        mulRow(rx, [con=1]) Multiply row rx by a constant
+        divRow(rx, [con=1]) Divide row rx by a constant
+        show() Print Matrix (values formated with set precision)
+        showRows() Display labeled rows of matrix without formatting
+        setAutoShow([True|False]) Automatic display after row operations
+        setPrecision([P=3]) Set displayed precision of elements in matrix.
+        subMatrixRight() Replace Matrix with right half of matrix
+        get() Returns 2d list populated with matrix values
 
 </pre>
 </div>
