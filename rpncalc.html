@@ -3,7 +3,7 @@
 <head>
 
 <meta charset="utf-8" />
-<title>RPN Calc</title>
+<title>RPN Calculator</title>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
@@ -181,110 +181,211 @@ div#notebook {
 
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[64]:</div>
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class="highlight"><pre><span class="kn">import</span> <span class="nn">math</span>
+<div class="highlight"><pre><span class="ch">#!/bin/python3</span>
+<span class="c1"># RPN Calculator by Darrell Harriman  harrimand@gmail.com</span>
+
+<span class="kn">import</span> <span class="nn">math</span>
 <span class="k">class</span> <span class="nc">rpn</span><span class="p">:</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inStr</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create RPN Stack from string&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">stack</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">funs</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;h&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">help</span><span class="p">,</span>
             <span class="s2">&quot;+&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">add</span><span class="p">,</span>
             <span class="s2">&quot;*&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">mul</span><span class="p">,</span>
             <span class="s2">&quot;-&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">sub</span><span class="p">,</span>
             <span class="s2">&quot;/&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">div</span><span class="p">,</span>
-            <span class="s2">&quot;d&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">dup</span><span class="p">,</span>
+            <span class="s2">&quot;du&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">dup</span><span class="p">,</span>
             <span class="s2">&quot;sq&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">sq</span><span class="p">,</span>
             <span class="s2">&quot;sqr&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">sqr</span><span class="p">,</span>
             <span class="s2">&quot;^&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">power</span><span class="p">,</span>
-            <span class="s2">&quot;%&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">mod</span><span class="p">}</span>
+            <span class="s2">&quot;%&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">mod</span><span class="p">,</span>
+            <span class="s2">&quot;p&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">pick</span><span class="p">,</span>
+            <span class="s2">&quot;pi&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span>
+            <span class="s2">&quot;1/&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">inv</span><span class="p">,</span>
+            <span class="s2">&quot;sh&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">show</span><span class="p">,</span>
+            <span class="s2">&quot;dr&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">drop</span><span class="p">,</span>
+            <span class="s2">&quot;sw&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">swap</span>
+        <span class="p">}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">inStr</span><span class="p">)</span>
-        
+
     <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inStr</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">inStr</span><span class="o">.</span><span class="n">split</span><span class="p">():</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">isnum</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
                 <span class="k">if</span> <span class="s1">&#39;.&#39;</span> <span class="ow">in</span> <span class="n">n</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
-                    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Pushing: &quot;</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="p">)</span>
+                    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Push&quot;</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="mi">15</span><span class="p">),</span> <span class="n">n</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="mi">15</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
-                    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Pushing: &quot;</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="p">)</span>
+                    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Push&quot;</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="mi">15</span><span class="p">),</span> <span class="n">n</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="mi">15</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">n</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">funs</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">funs</span><span class="p">[</span><span class="n">n</span><span class="p">]()</span>
         <span class="k">print</span><span class="p">()</span>
-    
+
+    <span class="k">def</span> <span class="nf">help</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n\</span>
+<span class="s2">            h    display this help</span><span class="se">\n\</span>
+<span class="s2">            +    add Level 1 to Level 2</span><span class="se">\n\</span>
+<span class="s2">            *    muliply Level 1 by Level 2</span><span class="se">\n\</span>
+<span class="s2">            -    subract Level 1 from Level 2</span><span class="se">\n\</span>
+<span class="s2">            /    divide Level 2 by Level 1</span><span class="se">\n\</span>
+<span class="s2">            du   duplicate Level 1</span><span class="se">\n\</span>
+<span class="s2">            sq   square of Level 1</span><span class="se">\n\</span>
+<span class="s2">            sqr  square root of Level 1</span><span class="se">\n\</span>
+<span class="s2">            ^    Level 2 raised to power of Level 1</span><span class="se">\n\</span>
+<span class="s2">            </span><span class="si">%    Le</span><span class="s2">vel 2 modulo Level 1</span><span class="se">\n\</span>
+<span class="s2">            p    pick Level defined by Level 1 value</span><span class="se">\n\</span>
+<span class="s2">            pi   push Pi to stack</span><span class="se">\n\</span>
+<span class="s2">            1/   invert (1/x) Level 1</span><span class="se">\n\</span>
+<span class="s2">            sh   Print stack with Level numbers</span><span class="se">\n\</span>
+<span class="s2">            dr   drop Level 1 from stack</span><span class="se">\n\</span>
+<span class="s2">            sw   swap Level 1 and Level 2</span><span class="se">\n\</span>
+<span class="s2">            &quot;</span><span class="p">)</span>
+
     <span class="k">def</span> <span class="nf">getStack</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">stack</span>
-    
+
     <span class="k">def</span> <span class="nf">isnum</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">n</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">isdigit</span><span class="p">()</span>
-    
+
     <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">n2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
-        <span class="n">n1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">n1</span> <span class="o">+</span> <span class="n">n2</span><span class="p">)</span>
-        <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Adding: &quot;</span><span class="p">,</span> <span class="n">n1</span><span class="p">,</span> <span class="s1">&#39;+&#39;</span><span class="p">,</span> <span class="n">n2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">n2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+            <span class="n">n1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">n1</span> <span class="o">+</span> <span class="n">n2</span><span class="p">)</span>
+            <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Add&quot;</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="mi">15</span><span class="p">),</span> <span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">n1</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39; + &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">n2</span><span class="p">))</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="mi">15</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Add requires 2 items on Stack&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">mul</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">n2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
-        <span class="n">n1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">n1</span> <span class="o">*</span> <span class="n">n2</span><span class="p">)</span>
-        <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Multiplying: &quot;</span><span class="p">,</span> <span class="n">n1</span><span class="p">,</span> <span class="s1">&#39;*&#39;</span><span class="p">,</span> <span class="n">n2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">n2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+            <span class="n">n1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">n1</span> <span class="o">*</span> <span class="n">n2</span><span class="p">)</span>
+            <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Multiply&quot;</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="mi">15</span><span class="p">),</span> <span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">n1</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39; * &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">n2</span><span class="p">))</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="mi">15</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Multiply requires 2 items on Stack&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">sub</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">n2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
-        <span class="n">n1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">n1</span> <span class="o">-</span> <span class="n">n2</span><span class="p">)</span>
-        <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Subtracting: &quot;</span><span class="p">,</span> <span class="n">n1</span><span class="p">,</span> <span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">n2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">n2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+            <span class="n">n1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">n1</span> <span class="o">-</span> <span class="n">n2</span><span class="p">)</span>
+            <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Subtract&quot;</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="mi">15</span><span class="p">),</span> <span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">n1</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39; - &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">n2</span><span class="p">))</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="mi">15</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Subtract requires 2 items on Stack&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">div</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">n2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
-        <span class="n">n1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">n1</span> <span class="o">/</span> <span class="n">n2</span><span class="p">)</span>
-        <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Dividing: &quot;</span><span class="p">,</span> <span class="n">n1</span><span class="p">,</span> <span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="n">n2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">n2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+            <span class="n">n1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">n1</span> <span class="o">/</span> <span class="n">n2</span><span class="p">)</span>
+            <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Divide&quot;</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="mi">15</span><span class="p">),</span> <span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">n1</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39; / &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">n2</span><span class="p">))</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="mi">15</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Divide requires 2 items on Stack&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">dup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">n1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">n1</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">n1</span><span class="p">)</span>
-        <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Duplicate&quot;</span><span class="p">,</span> <span class="n">n1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">n1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">n1</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">n1</span><span class="p">)</span>
+            <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Duplicate&quot;</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="mi">15</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="n">n1</span><span class="p">)</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="mi">15</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Stack Empty&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">sq</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">n1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">n1</span> <span class="o">*</span> <span class="n">n1</span><span class="p">)</span>
-        <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Square&quot;</span><span class="p">,</span> <span class="n">n1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">n1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">n1</span> <span class="o">*</span> <span class="n">n1</span><span class="p">)</span>
+            <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Square&quot;</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="mi">15</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="n">n1</span><span class="p">)</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="mi">15</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Stack Empty&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">sqr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">n1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">n1</span><span class="p">))</span>
-        <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Square Root&quot;</span><span class="p">,</span> <span class="n">n1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">n1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">n1</span><span class="p">))</span>
+            <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Square Root&quot;</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="mi">15</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="n">n1</span><span class="p">)</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="mi">15</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Stack Empty&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">power</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">n1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
-        <span class="n">n2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">n2</span><span class="o">**</span><span class="n">n1</span><span class="p">)</span>
-        <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Power&quot;</span><span class="p">,</span> <span class="n">n2</span><span class="p">,</span> <span class="s2">&quot;^&quot;</span><span class="p">,</span> <span class="n">n1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">n1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+            <span class="n">n2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">n2</span><span class="o">**</span><span class="n">n1</span><span class="p">)</span>
+            <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Power&quot;</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="mi">15</span><span class="p">),</span> <span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">n1</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39; ^ &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">n2</span><span class="p">))</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="mi">15</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Power requires 2 items on Stack&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">mod</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">n1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+            <span class="n">n2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">n2</span><span class="o">%</span><span class="k">n1</span><span class="p">)</span>
+            <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Modulo&quot;</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="mi">15</span><span class="p">),</span> <span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">n2</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39; % &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">n1</span><span class="p">))</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="mi">15</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Modulo requires 2 items on Stack&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">pick</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">n1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
-        <span class="n">n2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">n2</span><span class="o">%</span><span class="k">n1</span><span class="p">)</span>
-        <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Modulo&quot;</span><span class="p">,</span> <span class="n">n2</span><span class="p">,</span> <span class="s2">&quot;%&quot;</span><span class="p">,</span> <span class="n">n1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="p">)</span>
-</pre></div>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="p">)</span> <span class="o">&gt;</span> <span class="p">(</span><span class="n">n1</span> <span class="o">-</span> <span class="mi">2</span><span class="p">):</span>
+            <span class="n">n2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="p">)</span> <span class="o">-</span> <span class="n">n1</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">n2</span><span class="p">)</span>
+            <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Pick Level&quot;</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="mi">15</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="n">n1</span><span class="p">)</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="mi">15</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">n1</span><span class="p">)</span>
+            <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Pick Level out of range&quot;</span><span class="p">)</span>
 
-</div>
-</div>
-</div>
+    <span class="k">def</span> <span class="nf">pi</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">n1</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">n1</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Push Pi&quot;</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="mi">15</span><span class="p">),</span> <span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">n1</span><span class="p">)[:</span><span class="mi">4</span><span class="p">]</span><span class="o">+</span><span class="s2">&quot;...&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="mi">15</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="p">)</span>
 
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[54]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class="highlight"><pre><span class="n">R</span> <span class="o">=</span> <span class="n">rpn</span><span class="p">(</span><span class="s2">&quot;1 2 + 4.5 * 5 * 2 / 7 + 7 8 9 + 2 sq * * d d 169 sqr&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">inv</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">n1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">n1</span><span class="p">)</span>
+            <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Invert&quot;</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="mi">15</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;1/&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">n1</span><span class="p">))</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="mi">15</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Stack Empty&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">l</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="p">)</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">L</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">l</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+            <span class="k">print</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">L</span><span class="p">)</span><span class="o">.</span><span class="n">rjust</span><span class="p">(</span><span class="mi">8</span><span class="p">),</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+            <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+
+    <span class="k">def</span> <span class="nf">drop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Stack Empty&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">swap</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">n1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+            <span class="n">n2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">n1</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">n2</span><span class="p">)</span>
+            <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Swap&quot;</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="mi">15</span><span class="p">),</span> <span class="s2">&quot;L1 &lt;-&gt; L2&quot;</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="mi">15</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Swap requires 2 items on Stack&quot;</span><span class="p">)</span>
+
+
+
+<span class="n">R</span> <span class="o">=</span> <span class="n">rpn</span><span class="p">(</span><span class="s2">&quot;h 1 2 3 4 5&quot;</span><span class="p">)</span>
+
+<span class="n">R</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="s2">&quot;sh 4 sh p sh 7 sh p sh sw sh&quot;</span><span class="p">)</span>
+
+<span class="c1">#R = rpn(&quot; 2 1 + 4.5 * 5 * 2 / 7 + 7 8 9 + 2 sq * * du du 169 sqr 6 p pi 27 du + 4 * 13 14 15 sh&quot;)</span>
+<span class="c1">#P = rpn(&quot;3 sq 4 sq + sqr pi * 1/&quot;)</span>
+
 <span class="k">print</span><span class="p">(</span><span class="n">R</span><span class="o">.</span><span class="n">getStack</span><span class="p">())</span>
 </pre></div>
 
@@ -299,31 +400,75 @@ div#notebook {
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>
-Pushing:  1 [1]
-Pushing:  2 [1, 2]
-Adding:  1 + 2 [3]
-Pushing:  4.5 [3, 4.5]
-Multiplying:  3 * 4.5 [13.5]
-Pushing:  5 [13.5, 5]
-Multiplying:  13.5 * 5 [67.5]
-Pushing:  2 [67.5, 2]
-Dividing:  67.5 / 2 [33.75]
-Pushing:  7 [33.75, 7]
-Adding:  33.75 + 7 [40.75]
-Pushing:  7 [40.75, 7]
-Pushing:  8 [40.75, 7, 8]
-Pushing:  9 [40.75, 7, 8, 9]
-Adding:  8 + 9 [40.75, 7, 17]
-Pushing:  2 [40.75, 7, 17, 2]
-Square 2 [40.75, 7, 17, 4]
-Multiplying:  17 * 4 [40.75, 7, 68]
-Multiplying:  7 * 68 [40.75, 476]
-Duplicate 476 [40.75, 476, 476]
-Duplicate 476 [40.75, 476, 476, 476]
-Pushing:  169 [40.75, 476, 476, 476, 169]
-Square Root 169 [40.75, 476, 476, 476, 13.0]
 
-[40.75, 476, 476, 476, 13.0]
+            h    display this help
+            +    add Level 1 to Level 2
+            *    muliply Level 1 by Level 2
+            -    subract Level 1 from Level 2
+            /    divide Level 2 by Level 1
+            du   duplicate Level 1
+            sq   square of Level 1
+            sqr  square root of Level 1
+            ^    Level 2 raised to power of Level 1
+            %    Level 2 modulo Level 1
+            p    pick Level defined by Level 1 value
+            pi   push Pi to stack
+            1/   invert (1/x) Level 1
+            sh   Print stack with Level numbers
+            dr   drop Level 1 from stack
+            sw   swap Level 1 and Level 2
+            
+Push            1               [1]
+Push            2               [1, 2]
+Push            3               [1, 2, 3]
+Push            4               [1, 2, 3, 4]
+Push            5               [1, 2, 3, 4, 5]
+
+       5 	 1
+       4 	 2
+       3 	 3
+       2 	 4
+       1 	 5
+Push            4               [1, 2, 3, 4, 5, 4]
+       6 	 1
+       5 	 2
+       4 	 3
+       3 	 4
+       2 	 5
+       1 	 4
+Pick Level      4               [1, 2, 3, 4, 5, 3]
+       6 	 1
+       5 	 2
+       4 	 3
+       3 	 4
+       2 	 5
+       1 	 3
+Push            7               [1, 2, 3, 4, 5, 3, 7]
+       7 	 1
+       6 	 2
+       5 	 3
+       4 	 4
+       3 	 5
+       2 	 3
+       1 	 7
+Pick Level      7               [1, 2, 3, 4, 5, 3, 1]
+       7 	 1
+       6 	 2
+       5 	 3
+       4 	 4
+       3 	 5
+       2 	 3
+       1 	 1
+Swap            L1 &lt;-&gt; L2       [1, 2, 3, 4, 5, 1, 3]
+       7 	 1
+       6 	 2
+       5 	 3
+       4 	 4
+       3 	 5
+       2 	 1
+       1 	 3
+
+[1, 2, 3, 4, 5, 1, 3]
 
 </pre>
 </div>
@@ -335,7 +480,62 @@ Square Root 169 [40.75, 476, 476, 476, 13.0]
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[24]:</div>
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class="highlight"><pre><span class="n">R</span> <span class="o">=</span> <span class="n">rpn</span><span class="p">(</span><span class="s2">&quot;1 2 + 4.5 * 5 * 2 / 7 + 7 8 9 + 2 sq * * d d 169 sqr sh&quot;</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">R</span><span class="o">.</span><span class="n">getStack</span><span class="p">())</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+Push            1               [1]
+Push            2               [1, 2]
+Add             1 + 2           [3]
+Push            4.5             [3, 4.5]
+Multiply        3 * 4.5         [13.5]
+Push            5               [13.5, 5]
+Multiply        13.5 * 5        [67.5]
+Push            2               [67.5, 2]
+Divide          67.5 / 2        [33.75]
+Push            7               [33.75, 7]
+Add             33.75 + 7       [40.75]
+Push            7               [40.75, 7]
+Push            8               [40.75, 7, 8]
+Push            9               [40.75, 7, 8, 9]
+Add             8 + 9           [40.75, 7, 17]
+Push            2               [40.75, 7, 17, 2]
+Square          2               [40.75, 7, 17, 4]
+Multiply        17 * 4          [40.75, 7, 68]
+Multiply        7 * 68          [40.75, 476]
+Push            169             [40.75, 476, 169]
+Square Root     169             [40.75, 476, 13.0]
+       3 	 40.75
+       2 	 476
+       1 	 13.0
+
+[40.75, 476, 13.0]
+
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[13]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class="highlight"><pre><span class="n">mySt</span> <span class="o">=</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">]</span>
@@ -368,7 +568,7 @@ Square Root 169 [40.75, 476, 476, 476, 13.0]
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[65]:</div>
+<div class="prompt input_prompt">In&nbsp;[14]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class="highlight"><pre><span class="n">T</span> <span class="o">=</span> <span class="n">rpn</span><span class="p">(</span><span class="s2">&quot;3 4 5&quot;</span><span class="p">)</span>
@@ -389,25 +589,25 @@ Square Root 169 [40.75, 476, 476, 476, 13.0]
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>
-Pushing:  3 [3]
-Pushing:  4 [3, 4]
-Pushing:  5 [3, 4, 5]
+Push            3               [3]
+Push            4               [3, 4]
+Push            5               [3, 4, 5]
 
-Pushing:  6 [3, 4, 5, 6]
-Pushing:  7 [3, 4, 5, 6, 7]
-Adding:  6 + 7 [3, 4, 5, 13]
+Push            6               [3, 4, 5, 6]
+Push            7               [3, 4, 5, 6, 7]
+Add             6 + 7           [3, 4, 5, 13]
 
-Pushing:  12 [3, 4, 5, 13, 12]
-Adding:  13 + 12 [3, 4, 5, 25]
-Square Root 25 [3, 4, 5, 5.0]
+Push            12              [3, 4, 5, 13, 12]
+Add             13 + 12         [3, 4, 5, 25]
+Square Root     25              [3, 4, 5, 5.0]
 
-Pushing:  2 [3, 4, 5, 5.0, 2]
-Power 5.0 ^ 2 [3, 4, 5, 25.0]
+Push            2               [3, 4, 5, 5.0, 2]
+Power           2 ^ 5.0         [3, 4, 5, 25.0]
 
-Pushing:  4 [3, 4, 5, 25.0, 4]
-Multiplying:  25.0 * 4 [3, 4, 5, 100.0]
-Pushing:  31 [3, 4, 5, 100.0, 31]
-Modulo 100.0 % 31 [3, 4, 5, 7.0]
+Push            4               [3, 4, 5, 25.0, 4]
+Multiply        25.0 * 4        [3, 4, 5, 100.0]
+Push            31              [3, 4, 5, 100.0, 31]
+Modulo          100.0 % 31      [3, 4, 5, 7.0]
 
 
 </pre>
@@ -420,7 +620,7 @@ Modulo 100.0 % 31 [3, 4, 5, 7.0]
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[14]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class="highlight"><pre> 
