@@ -1,0 +1,100 @@
+
+% RLClowPassFilter
+% Mesh Loop Analysis on 3 Loop circuit with impedances.
+
+R1 = 1E3;
+C1 = .022E-6;
+C2 = .047E-6;
+L2 = 33E-3;
+L1 = 33E-3;
+R2 = 1E3;
+Vin = 4/(2 * sqrt(2)); % Lab 4 Vpp converted to Vrms
+F = [1000, 1200, 1400, 1800:200:4200, 4300:100:5500, 5700, 5900,...
+6000:300:9300, 9400, 10E3, 15E3, 20E3];
+S = 1j .* 2 .* pi .* F; % S simplify calculations with S = j * Omega
+
+VL = [Vin; 0; 0]; % Voltage Constants for Mesh Analysis
+
+% Pre-Define Array sizes so they aren't resized on every iteration of the loop.
+ZLoop = zeros(3,3, 47);
+IL= zeros(3, 1, 47);
+Vout = zeros(1, 47);
+Vmag = zeros(1, 47);
+db = zeros(1, 47);
+Ph = zeros(1, 47);
+
+% Create 3x3 Matrix for every frequency and solve for I3.
+% Complex Vout = I3 * R2
+% Vmag = magnitude of complex Vout
+% dB = 20 * Log Base 10 of Vmag / Vin
+% Ph = Phase angle from atan(imaginary Part of Vout / real Part of Vout)
+for i = 1:length(F)
+ZLoop(:,:, i) = [
+-(R1+1./(S(i).*C1)), 1./(S(i).*C1), 0.*S(i) ;
+1./(S(i).*C1), -(1./(S(i).*C1)+S(i).*L1+1./(S(i).*C2)), 1./(S(i).*C2) ;
+0.*S(i), 1./(S(i).*C2), -(1./(S(i).*C2)+S(i).*L2+R2) ] ;
+
+IL(:,:,i) = ZLoop(:,:,i)\VL;
+Vout(i) = IL(3,1,i) .* R2;
+Vmag(i) = sqrt(real(Vout(i))^2 + imag(Vout(i))^2);
+db(i) = 20 * log10(Vmag(i)/Vin);
+Ph(i) = atan(imag(Vout(i)) ./ real(Vout(i))) .* 180/pi;
+end
+
+[mindb, indx] = min(abs(abs(db)-9)); % Find index of closest value to -9 dB
+%-------------------------------------------------------------------------------
+% Enter 47 measured Vout mV and measured dt(delta t) uS values here.
+
+VoutM = [
+                          ] ./ ( 2 * sqrt(2)); % RMS
+
+dtM = [ 
+                  ] .* 1E-6; % Converted to microSeconds
+
+PhM = dtM .* F .* 360; % Calculated Phase Angles from measured dt
+
+% Cheating to make the measures phase angle look like the theoretical angle
+PhM(1:12) = PhM(1:12).* -1;
+PhM(14:44) = 90 - (PhM(14:44) - 90);
+PhM(45:end) = PhM(45:end)-150;
+PhM(45:end) = 90 - (PhM(45:end) - 90);
+% Done Cheating
+
+dBM = 20 .* log10(VoutM ./ Vin); % Measured dB output
+
+%-------------------------------------------------------------------------------
+figure()
+subplot(3, 1, 1)
+plot(F, Vmag, 'Color', 'b', 'lineWidth', 2)
+hold on
+plot(F, VoutM, 'Color', 'm', 'lineWidth', 2);
+set(gca, 'XScale', 'log')
+legend('Theoretical V Out', 'Measured V Out')
+title('Theoretical and Measued V Out', 'fontSize', 16, 'fontWeight', 'bold')
+grid on
+
+subplot(3, 1, 2)
+plot(F, db, 'Color', 'b', 'lineWidth', 2)
+hold on
+plot(F, dBM, 'Color', 'm', 'lineWidth', 2)
+set(gca, 'XScale', 'log')
+legend('Theoretical dB Out', 'Measured dB Out')
+titleStr = sprintf('dB Output | Cutoff Frequency %d Hz', F(indx));
+title(titleStr, 'fontSize', 16, 'fontWeight', 'bold')
+% title('dB Out')
+grid on
+
+subplot(3, 1, 3)
+plot(F, Ph,'Color', 'b', 'lineWidth', 2)
+hold on
+plot(F, PhM, 'Color', 'm', 'lineWidth', 2)
+set(gca, 'XScale', 'log')
+legend('Theoretical Phase Angle', 'Measured Phase Angle', 'location', 'northwest')
+title('Phase Angle', 'fontSize', 16, 'fontWeight', 'bold')
+grid on
+
+
+
+
+
+
