@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>pubTest  Document Formatting</title>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: { inlineMath: [['$','$'], ['\\(','\\)']] },
+  TeX: { equationNumbers: { autoNumber: 'all' } }
+});
+</script>
+<script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+<style>
+body > * {
+  max-width: 42em;
+}
+body {
+  font-family: "Roboto Condensed", sans-serif;
+  padding-left: 7.5em;
+  padding-right: 7.5em;
+}
+pre, code {
+  max-width: 50em;
+  font-family: monospace;
+}
+pre.oct-code {
+  border: 1px solid Grey;
+  padding: 5px;
+}
+pre.oct-code-output {
+  margin-left: 2em;
+}
+span.comment {
+  color: ForestGreen;
+}
+span.keyword {
+  color: Blue;
+}
+span.string {
+  color: DarkOrchid;
+}
+footer {
+  margin-top: 2em;
+  font-size: 80%;
+}
+a, a:visited {
+  color: Blue;
+}
+h2 {
+  font-family: "Roboto Condensed", serif;
+  margin-top: 1.5em;
+}
+h2 a, h2 a:visited {
+  color: Black;
+}
+</style>
+
+</head>
+<body>
+<h1>pubTest  Document Formatting</h1>
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#node1"><b>One</b></a></li>
+<li><a href="#node2"><i>Two</i> <b>Inline Latex</b></a></li>
+<li><a href="#node3"><code>Three</code> VLSM Table</a></li>
+<li><a href="#node4"><b>Image Load</b></a></li>
+<li><a href="#node5">Delta Wye</a></li>
+<li><a href="#node6"><b>Image Load</b></a></li>
+<li><a href="#node7">Delta Wye</a></li>
+</ul>
+<h2><a id="node1"><b>One</b></a></h2>
+<pre class="oct-code">F = 2000;
+T = 1 / F;
+t = linspace(0, 2 * T, 144);
+w = 2 * pi * F;
+S = 5 * sin(w * t);
+plot(t, S);
+hold on;
+line([0, 2 * T], [0, 0], <span class="string">'color'</span>, <span class="string">'r'</span>, <span class="string">'linewidth'</span>, 2)
+set(gca, <span class="string">'Xtick'</span>, [0:T/4:2 * T], <span class="string">'Ytick'</span>, [-6:1:6])
+grid on;</pre>
+<img src="pubTest-1.png" alt="pubTest-1.png"><h2><a id="node2"><i>Two</i> <b>Inline Latex</b></a></h2>
+<p>$ Latex\hspace{3em}\frac{Divide_{By}}{Zero^{-1}}\surd{\mu\pi}\nonumber\\$
+Some shorter inline equation $\hspace{2em}e^{ix} = \cos x + i\sin x$
+$\\$
+Or more complicated formulas as displayed math:
+$ \hspace{2em}\\$
+$ e^x = \lim_{n\rightarrow\infty}\left(1+\dfrac{x}{n}\right)^{n}\nonumber$</p>
+
+<pre class="oct-code">d = 1:7
+w = 0:7:28
+cal = d + w<span class="string">'</span>
+<span class="comment">#</span>
+</pre>
+
+<pre class="oct-code-output">d =
+   1   2   3   4   5   6   7
+w =
+    0    7   14   21   28
+cal =
+    1    2    3    4    5    6    7
+    8    9   10   11   12   13   14
+   15   16   17   18   19   20   21
+   22   23   24   25   26   27   28
+   29   30   31   32   33   34   35
+</pre>
+<h2><a id="node3"><code>Three</code> VLSM Table</a></h2>
+<pre class="oct-code">mDb = base2dec(dec2bin(0:15),4);
+mDb2 = 2 .* mDb;
+VLSMgrid = mDb<span class="string">' + mDb2</span></pre>
+
+<pre class="oct-code-output">VLSMgrid =
+     0     1     4     5    16    17    20    21    64    65    68    69    80    81    84    85
+     2     3     6     7    18    19    22    23    66    67    70    71    82    83    86    87
+     8     9    12    13    24    25    28    29    72    73    76    77    88    89    92    93
+    10    11    14    15    26    27    30    31    74    75    78    79    90    91    94    95
+    32    33    36    37    48    49    52    53    96    97   100   101   112   113   116   117
+    34    35    38    39    50    51    54    55    98    99   102   103   114   115   118   119
+    40    41    44    45    56    57    60    61   104   105   108   109   120   121   124   125
+    42    43    46    47    58    59    62    63   106   107   110   111   122   123   126   127
+   128   129   132   133   144   145   148   149   192   193   196   197   208   209   212   213
+   130   131   134   135   146   147   150   151   194   195   198   199   210   211   214   215
+   136   137   140   141   152   153   156   157   200   201   204   205   216   217   220   221
+   138   139   142   143   154   155   158   159   202   203   206   207   218   219   222   223
+   160   161   164   165   176   177   180   181   224   225   228   229   240   241   244   245
+   162   163   166   167   178   179   182   183   226   227   230   231   242   243   246   247
+   168   169   172   173   184   185   188   189   232   233   236   237   248   249   252   253
+   170   171   174   175   186   187   190   191   234   235   238   239   250   251   254   255
+</pre>
+<h2><a id="node4"><b>Image Load</b></a></h2>
+<pre class="oct-code">im = imread(<span class="string">'Delta_Wye.PNG'</span>);
+imshow(im);</pre>
+<img src="pubTest-2.png" alt="pubTest-2.png"><h2><a id="node5">Delta Wye</a></h2>
+<p>$ R_6 = \frac{R_1 * R_5}{R_1 + R_2 + R_5}\nonumber$
+$ \hspace{2em}R_7 = \frac{R_2 * R_5}{R_1 + R_2 + R_5}\nonumber$
+$ \hspace{2em}R_{10} = \frac{R_1 * R_2}{R_1 + R_2 + R_5}\nonumber$
+$ \hspace{2em}\\$
+$ R_8 = R_3\hspace{2em}R_9 = R_4\hspace{2em}$
+$ R_{total} = R_{10} + \frac{1}{\frac{1}{R_6 + R_8} + \frac{1}{R_7 + R_9}}\nonumber$</p>
+
+<pre class="oct-code">R1 = 4; R2 = 2; R3 = 2; R4 = 1; R5 = 5;
+R6 = R1 * R5 / (R1+R2+R5)
+R7 = R2 * R5 / (R1+R2+R5)
+R8 = R3
+R9 = R4
+R10 = R1 * R2 / (R1+R2+R5)
+Rtotal = R10 + 1/(1/(R6 + R8) + 1/(R7 + R9))</pre>
+
+<pre class="oct-code-output">R6 =  1.8182
+R7 =  0.90909
+R8 =  2
+R9 =  1
+R10 =  0.72727
+Rtotal =  2.0000
+</pre>
+<h2><a id="node6"><b>Image Load</b></a></h2>
+<pre class="oct-code">im2 = imread(<span class="string">'Delta_Wye_2.PNG'</span>);
+imshow(im2);</pre>
+<img src="pubTest-3.png" alt="pubTest-3.png"><h2><a id="node7">Delta Wye</a></h2>
+<p>$ R_8 = \frac{R_3 * R_5}{R_3 + R_4 + R_5}\nonumber$
+$ \hspace{2em}R_9 = \frac{R_4 * R_5}{R_3 + R_4 + R_5}\nonumber$
+$ \hspace{2em}R_{10} = \frac{R_3 * R_4}{R_3 + R_4 + R_5}\nonumber$
+$ \hspace{2em}\\$
+$ R_6 = R_1\hspace{2em}R_7 = R_2\hspace{2em}$
+$ R_{total} = R_{10} + \frac{1}{\frac{1}{R_6 + R_8} + \frac{1}{R_7 + R_9}}\nonumber$</p>
+
+<pre class="oct-code">R1 = 4; R2 = 2; R3 = 2; R4 = 1; R5 = 5;
+R6 = R1
+R7 = R2
+R8 = R3 * R5 / (R3+R4+R5)
+R9 = R4 * R5 / (R3+R4+R5)
+R10 = R3 * R4 / (R3+R4+R5)
+Rtotal = R10 + 1/(1/(R6 + R8) + 1/(R7 + R9))</pre>
+
+<pre class="oct-code-output">R6 =  4
+R7 =  2
+R8 =  1.2500
+R9 =  0.62500
+R10 =  0.25000
+Rtotal =  2
+</pre>
+
+<footer>
+<hr>
+<a href="https://www.octave.org">Published with GNU Octave 4.4.0</a>
+</footer>
+<!--
+##### SOURCE BEGIN #####
+## pubTest  Document Formatting
+#
+## *One*
+#
+F = 2000;
+T = 1 / F;
+t = linspace(0, 2 * T, 144);
+w = 2 * pi * F;
+S = 5 * sin(w * t);
+plot(t, S);
+hold on;
+line([0, 2 * T], [0, 0], 'color', 'r', 'linewidth', 2)
+set(gca, 'Xtick', [0:T/4:2 * T], 'Ytick', [-6:1:6])
+grid on;
+## _Two_ *Inline Latex*
+#
+# $ Latex\hspace{3em}\frac{Divide_{By}}{Zero^{-1}}\surd{\mu\pi}\nonumber\\$
+# Some shorter inline equation $\hspace{2em}e^{ix} = \cos x + i\sin x$
+# $\\$
+# Or more complicated formulas as displayed math:
+# $ \hspace{2em}\\$
+# $ e^x = \lim_{n\rightarrow\infty}\left(1+\dfrac{x}{n}\right)^{n}\nonumber$
+#
+d = 1:7
+w = 0:7:28
+cal = d + w'
+#
+## |Three| VLSM Table
+#
+mDb = base2dec(dec2bin(0:15),4);
+mDb2 = 2 .* mDb;
+VLSMgrid = mDb' + mDb2
+##
+## *Image Load*
+im = imread('Delta_Wye.PNG');
+imshow(im);
+## Delta Wye
+# $ R_6 = \frac{R_1 * R_5}{R_1 + R_2 + R_5}\nonumber$
+# $ \hspace{2em}R_7 = \frac{R_2 * R_5}{R_1 + R_2 + R_5}\nonumber$
+# $ \hspace{2em}R_{10} = \frac{R_1 * R_2}{R_1 + R_2 + R_5}\nonumber$
+# $ \hspace{2em}\\$
+# $ R_8 = R_3\hspace{2em}R_9 = R_4\hspace{2em}$
+# $ R_{total} = R_{10} + \frac{1}{\frac{1}{R_6 + R_8} + \frac{1}{R_7 + R_9}}\nonumber$
+#
+R1 = 4; R2 = 2; R3 = 2; R4 = 1; R5 = 5;
+R6 = R1 * R5 / (R1+R2+R5)
+R7 = R2 * R5 / (R1+R2+R5)
+R8 = R3
+R9 = R4
+R10 = R1 * R2 / (R1+R2+R5)
+Rtotal = R10 + 1/(1/(R6 + R8) + 1/(R7 + R9))
+
+## *Image Load*
+im2 = imread('Delta_Wye_2.PNG');
+imshow(im2);
+## Delta Wye
+# $ R_8 = \frac{R_3 * R_5}{R_3 + R_4 + R_5}\nonumber$
+# $ \hspace{2em}R_9 = \frac{R_4 * R_5}{R_3 + R_4 + R_5}\nonumber$
+# $ \hspace{2em}R_{10} = \frac{R_3 * R_4}{R_3 + R_4 + R_5}\nonumber$
+# $ \hspace{2em}\\$
+# $ R_6 = R_1\hspace{2em}R_7 = R_2\hspace{2em}$
+# $ R_{total} = R_{10} + \frac{1}{\frac{1}{R_6 + R_8} + \frac{1}{R_7 + R_9}}\nonumber$
+#
+R1 = 4; R2 = 2; R3 = 2; R4 = 1; R5 = 5;
+R6 = R1
+R7 = R2
+R8 = R3 * R5 / (R3+R4+R5)
+R9 = R4 * R5 / (R3+R4+R5)
+R10 = R3 * R4 / (R3+R4+R5)
+Rtotal = R10 + 1/(1/(R6 + R8) + 1/(R7 + R9))
+##### SOURCE END #####
+-->
+</body>
+</html>
