@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+* {
+  box-sizing: border-box;
+}
+.head2 {
+background: #abc;
+}
+
+/* Create two equal columns that floats next to each other */
+.columnL {
+  float: left;
+  width: 50%;
+  padding: 50px;
+}
+.columnR {
+  float: left;
+  width: 50%;
+  padding: 50px;
+}
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+footer {
+}
+
+
+table {
+width:25%;
+border-collapse: collapse;
+}
+
+th, td {
+padding: 10px;
+text-align: center;
+}
+
+ #t01 th, td {
+border: 2px solid black;
+border-collapse: collapse;
+}
+
+ #t01 tr:nth-child(even) {
+background-color: #eee;
+}
+
+ #t01 tr:nth-child(odd) {
+background-color: #fff;
+}
+
+ #t01 th {
+background-color: black;
+color: white;
+}
+
+table {
+width:50%;
+border-collapse: collapse;
+}
+
+th, td {
+padding: 10px;
+text-align: center;
+}
+
+ #t02 th, td {
+border: 2px solid black;
+border-collapse: collapse;
+}
+
+ #t02 tr:nth-child(even) {
+background-color: #eee;
+}
+
+ #t02 tr:nth-child(odd) {
+background-color: #fff;
+}
+
+ #t02 th {
+background-color: black;
+color: white;
+}
+</style>
+</head>
+<body>
+
+<h2>Boolean Expression | Truth Table | Simplified Boolean Expression</h2>
+<div class="head2">
+<p style="font-size:160%;" align="center"><br><b>  <span style="text-decoration: overline"><b>A</b></span><nbsp>  <span style="text-decoration: overline"><b>B</b></span><nbsp>  <span style="text-decoration: overline"><b>C</b></span><nbsp> <b>D</b> <b> </b> <b>+</b> <b> </b>  <span style="text-decoration: overline"><b>A</b></span><nbsp>  <span style="text-decoration: overline"><b>B</b></span><nbsp> <b>C</b>  <span style="text-decoration: overline"><b>D</b></span><nbsp> <b> </b> <b>+</b> <b> </b>  <span style="text-decoration: overline"><b>A</b></span><nbsp>  <span style="text-decoration: overline"><b>B</b></span><nbsp> <b>C</b> <b>D</b> <b> </b> <b>+</b> <b> </b>  <span style="text-decoration: overline"><b>A</b></span><nbsp> <b>B</b>  <span style="text-decoration: overline"><b>C</b></span><nbsp> <b>D</b> <b> </b> <b>+</b> <b> </b>  <span style="text-decoration: overline"><b>A</b></span><nbsp> <b>B</b> <b>C</b>  <span style="text-decoration: overline"><b>D</b></span><nbsp> <b> </b> <b>+</b> <b> </b>  <span style="text-decoration: overline"><b>A</b></span><nbsp> <b>B</b> <b>C</b> <b>D</b> <b> </b> <b>+</b> <b> </b> <b>A</b>  <span style="text-decoration: overline"><b>B</b></span><nbsp>  <span style="text-decoration: overline"><b>C</b></span><nbsp> <b>D</b> <b> </b> <b>+</b> <b> </b> <b>A</b>  <span style="text-decoration: overline"><b>B</b></span><nbsp> <b>C</b>  <span style="text-decoration: overline"><b>D</b></span><nbsp> <b> </b> <b>+</b> <b> </b> <b>A</b>  <span style="text-decoration: overline"><b>B</b></span><nbsp> <b>C</b> <b>D</b> <b> </b> <b>+</b> <b> </b> <b>A</b> <b>B</b>  <span style="text-decoration: overline"><b>C</b></span><nbsp> <b>D</b> <b> </b> <b>+</b> <b> </b> <b>A</b> <b>B</b> <b>C</b>  <span style="text-decoration: overline"><b>D</b></span><nbsp></b><br><br></p></div>
+<div class="row">
+  <div class="columnL" style="background-color:#fff;">
+    <h2>Term Coverages</h2>  
+<table id="t02">
+<tr>
+	<th>TERM</th>
+	<th>1</th>
+	<th>2</th>
+	<th>3</th>
+	<th>5</th>
+	<th>6</th>
+	<th>7</th>
+	<th>9</th>
+	<th>10</th>
+	<th>11</th>
+	<th>13</th>
+	<th>14</th>
+</tr>
+<tr><td>  <span style="text-decoration: overline"><b>A</b></span><nbsp> <b>D</b> <b> </b> <b></td><td><b>X</b></td><td><b>&nbsp;</b></td><td><b>X</b></td><td><b>X</b></td><td><b>&nbsp;</b></td><td><b>X</b></td><td><b>&nbsp;</b></td><td><b>&nbsp;</b></td><td><b>&nbsp;</b></td><td><b>&nbsp;</b></td><td><b>&nbsp;</b></td></tr>
+<tr><td></b> <b> </b>  <span style="text-decoration: overline"><b>B</b></span><nbsp> <b>D</b> <b> </b> <b></td><td><b>X</b></td><td><b>&nbsp;</b></td><td><b>X</b></td><td><b>&nbsp;</b></td><td><b>&nbsp;</b></td><td><b>&nbsp;</b></td><td><b>X</b></td><td><b>&nbsp;</b></td><td><b>X</b></td><td><b>&nbsp;</b></td><td><b>&nbsp;</b></td></tr>
+<tr><td></b> <b> </b>  <span style="text-decoration: overline"><b>C</b></span><nbsp> <b>D</b> <b> </b> <b></td><td><b>X</b></td><td><b>&nbsp;</b></td><td><b>&nbsp;</b></td><td><b>X</b></td><td><b>&nbsp;</b></td><td><b>&nbsp;</b></td><td><b>X</b></td><td><b>&nbsp;</b></td><td><b>&nbsp;</b></td><td><b>X</b></td><td><b>&nbsp;</b></td></tr>
+<tr><td></b> <b> </b> <b>C</b>  <span style="text-decoration: overline"><b>D</b></span><nbsp></td><td><b>&nbsp;</b></td><td><b>X</b></td><td><b>&nbsp;</b></td><td><b>&nbsp;</b></td><td><b>X</b></td><td><b>&nbsp;</b></td><td><b>&nbsp;</b></td><td><b>X</b></td><td><b>&nbsp;</b></td><td><b>&nbsp;</b></td><td><b>X</b></td></tr>
+
+</table>
+ </div>
+  <div class="columnR" style="background-color:#fff;">
+    <h3>Truth Table</h3>
+<table id="t01">
+<tr>
+	<th>Dec</th>
+	<th>A</th>
+	<th>B</th>
+	<th>C</th>
+	<th>D</th>
+	<th>Q</th>
+</tr>
+<tr><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td><b>0</b></td></tr>
+<tr><td>1</td><td>0</td><td>0</td><td>0</td><td>1</td><td><b>1</b></td></tr>
+<tr><td>2</td><td>0</td><td>0</td><td>1</td><td>0</td><td><b>1</b></td></tr>
+<tr><td>3</td><td>0</td><td>0</td><td>1</td><td>1</td><td><b>1</b></td></tr>
+<tr><td>4</td><td>0</td><td>1</td><td>0</td><td>0</td><td><b>0</b></td></tr>
+<tr><td>5</td><td>0</td><td>1</td><td>0</td><td>1</td><td><b>1</b></td></tr>
+<tr><td>6</td><td>0</td><td>1</td><td>1</td><td>0</td><td><b>1</b></td></tr>
+<tr><td>7</td><td>0</td><td>1</td><td>1</td><td>1</td><td><b>1</b></td></tr>
+<tr><td>8</td><td>1</td><td>0</td><td>0</td><td>0</td><td><b>0</b></td></tr>
+<tr><td>9</td><td>1</td><td>0</td><td>0</td><td>1</td><td><b>1</b></td></tr>
+<tr><td>10</td><td>1</td><td>0</td><td>1</td><td>0</td><td><b>1</b></td></tr>
+<tr><td>11</td><td>1</td><td>0</td><td>1</td><td>1</td><td><b>1</b></td></tr>
+<tr><td>12</td><td>1</td><td>1</td><td>0</td><td>0</td><td><b>0</b></td></tr>
+<tr><td>13</td><td>1</td><td>1</td><td>0</td><td>1</td><td><b>1</b></td></tr>
+<tr><td>14</td><td>1</td><td>1</td><td>1</td><td>0</td><td><b>1</b></td></tr>
+<tr><td>15</td><td>1</td><td>1</td><td>1</td><td>1</td><td><b>0</b></td></tr>
+
+</table>
+
+</div>
+</div>
+<footer style="background-color:#abc;">
+<p style="font-size:160%;" align="center"><br><b>  <span style="text-decoration: overline"><b>A</b></span><nbsp> <b>D</b> <b> </b> <b>+</b> <b> </b>  <span style="text-decoration: overline"><b>B</b></span><nbsp> <b>D</b> <b> </b> <b>+</b> <b> </b>  <span style="text-decoration: overline"><b>C</b></span><nbsp> <b>D</b> <b> </b> <b>+</b> <b> </b> <b>C</b>  <span style="text-decoration: overline"><b>D</b></span><nbsp></b><br>&nbsp;</p></footer>
+
+</body>
+</html>
